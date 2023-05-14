@@ -7,18 +7,16 @@ import java.util.Objects;
 @Entity
 public class InvestmentAccount {
 
-
-    //    @SequenceGenerator(
-//            name = "investmentAccount_id_sequence",
-//            sequenceName = "investmentAccount_id_sequence",
-//            allocationSize = 1
-//    )
-//    @GeneratedValue(
-//            strategy = GenerationType.SEQUENCE,
-//            generator = "investmentAccount_id_sequence"
-//    )
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(
+            name = "investmentAccount_id_sequence",
+            sequenceName = "investmentAccount_id_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "investmentAccount_id_sequence"
+    )
     private Long id;
     @Column(nullable = false, unique = true) //come back might need to add uniqueConstraints
     private String username;
