@@ -17,14 +17,14 @@ public class InvestmentAccount {
             strategy = GenerationType.SEQUENCE,
             generator = "investmentAccount_id_sequence"
     )
-    private Long id;
+    private Integer id;
     @Column(nullable = false, unique = true) //come back might need to add uniqueConstraints
     private String username;
     @Column(nullable = false, unique = true) //come back might need to add uniqueConstraints
     private String email;
     @Column(nullable = false)
     private String password;
-    private int balance; //look into this, online says to use double
+    private int balance; //look into this, online says not to use double
 
     public InvestmentAccount() {
     }
@@ -36,7 +36,7 @@ public class InvestmentAccount {
         this.balance = balance;
     }
 
-    public InvestmentAccount(Long id, String username, String email, String password, int balance) {
+    public InvestmentAccount(Integer id, String username, String email, String password, int balance) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -44,11 +44,11 @@ public class InvestmentAccount {
         this.balance = balance;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

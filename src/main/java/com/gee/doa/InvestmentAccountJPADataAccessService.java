@@ -5,9 +5,10 @@ import com.gee.repository.InvestmentAccountRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository("jpa")
-public class InvestmentAccountJPADataAccessService implements InvestmentAccountDAO {
+public class InvestmentAccountJPADataAccessService implements InvestmentAccountDao {
 
     private final InvestmentAccountRepository investmentAccountRepository;
 
@@ -18,5 +19,10 @@ public class InvestmentAccountJPADataAccessService implements InvestmentAccountD
     @Override
     public List<InvestmentAccount> selectAllInvestmentAccount() {
         return investmentAccountRepository.findAll();
+    }
+
+    @Override
+    public Optional<InvestmentAccount> selectInvestmentAccountById(Integer id) {
+        return investmentAccountRepository.findById(id);
     }
 }
