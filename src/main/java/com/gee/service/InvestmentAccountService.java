@@ -1,6 +1,7 @@
 package com.gee.service;
 
 import com.gee.doa.InvestmentAccountDao;
+import com.gee.exception.ResourceNotFoundException;
 import com.gee.model.InvestmentAccount;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,6 @@ public class InvestmentAccountService {
 
     public InvestmentAccount getInvestmentAccount(Integer id) {
         return investmentAccountDao.selectInvestmentAccountById(id)
-                .orElseThrow(() -> new IllegalArgumentException("id [%s] not found".formatted(id)));
+                .orElseThrow(() -> new ResourceNotFoundException("investment account with id [%s] not found".formatted(id)));
     }
 }
