@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface InvestmentAccountDao {
     List<InvestmentAccount> selectAllInvestmentAccount();
     Optional<InvestmentAccount> selectInvestmentAccountById(Integer id);
+    void insertInvestmentAccount(InvestmentAccount investmentAccount);
+    boolean existPersonWithEmail(String email);
+    boolean existPersonWithUsername(String email);
 }

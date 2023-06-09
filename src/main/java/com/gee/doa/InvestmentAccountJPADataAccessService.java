@@ -25,4 +25,21 @@ public class InvestmentAccountJPADataAccessService implements InvestmentAccountD
     public Optional<InvestmentAccount> selectInvestmentAccountById(Integer id) {
         return investmentAccountRepository.findById(id);
     }
+
+    @Override
+    public void insertInvestmentAccount(InvestmentAccount investmentAccount) {
+        investmentAccountRepository.save(investmentAccount);
+    }
+
+    @Override
+    public boolean existPersonWithEmail(String email) {
+        return investmentAccountRepository.existsInvestmentAccountByEmail(email);
+    }
+
+    @Override
+    public boolean existPersonWithUsername(String email) {
+        return investmentAccountRepository.existsInvestmentAccountByUsername(email);
+    }
+
+
 }

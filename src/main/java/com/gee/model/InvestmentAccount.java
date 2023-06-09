@@ -9,8 +9,8 @@ public class InvestmentAccount {
 
     @Id
     @SequenceGenerator(
-            name = "investmentAccount_id_sequence",
-            sequenceName = "investmentAccount_id_sequence",
+            name = "investment_account_id_sequence",
+            sequenceName = "investment_account_id_sequence",
             allocationSize = 1
     )
     @GeneratedValue(

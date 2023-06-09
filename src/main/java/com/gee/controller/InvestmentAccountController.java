@@ -1,11 +1,9 @@
 package com.gee.controller;
 
 import com.gee.model.InvestmentAccount;
+import com.gee.record.InvestmentAccountRegistrationRequest;
 import com.gee.service.InvestmentAccountService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +27,9 @@ public class InvestmentAccountController {
         return investmentAccountService.getInvestmentAccount(investmentAccountId);
     }
 
+    @PostMapping
+    public void registerInvestmentAccount(@RequestBody InvestmentAccountRegistrationRequest request) {
+        investmentAccountService.addInvestmentAccount(request);
+    }
 
 }
