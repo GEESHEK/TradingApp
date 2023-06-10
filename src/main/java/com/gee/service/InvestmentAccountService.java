@@ -50,4 +50,14 @@ public class InvestmentAccountService {
         );
         investmentAccountDao.insertInvestmentAccount(investmentAccount);
     }
+
+    public void deleteInvestmentAccountById(Integer investmentAccountId) {
+        if(!investmentAccountDao.existsPersonWithId(investmentAccountId)) {
+            throw new ResourceNotFoundException(
+                    "investment account with id [%s] not found".formatted(investmentAccountId)
+            );
+        }
+
+        investmentAccountDao.deleteInvestmentAccountById(investmentAccountId);
+    }
 }

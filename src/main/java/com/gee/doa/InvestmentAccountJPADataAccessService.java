@@ -41,5 +41,14 @@ public class InvestmentAccountJPADataAccessService implements InvestmentAccountD
         return investmentAccountRepository.existsInvestmentAccountByUsername(email);
     }
 
+    @Override
+    public void deleteInvestmentAccountById(Integer investmentAccountId) {
+        investmentAccountRepository.deleteById(investmentAccountId);
+    }
+
+    @Override
+    public boolean existsPersonWithId(Integer id) {
+        return investmentAccountRepository.existsInvestmentAccountById(id);
+    }
 
 }

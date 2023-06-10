@@ -32,4 +32,9 @@ public class InvestmentAccountController {
         investmentAccountService.addInvestmentAccount(request);
     }
 
+    @DeleteMapping("{investmentAccountId}")
+    public void deleteInvestmentAccount(@PathVariable("investmentAccountId") Integer investmentAccountId) {
+        investmentAccountService.deleteInvestmentAccountById(investmentAccountId);
+    }
+
 }
