@@ -8,5 +8,6 @@ public interface InvestmentAccountRepository extends JpaRepository<InvestmentAcc
 
     boolean existsInvestmentAccountByEmail(String email);
     boolean existsInvestmentAccountByUsername(String email);
+    boolean existsInvestmentAccountById(Integer id);
 
 }

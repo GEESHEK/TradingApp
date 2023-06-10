@@ -11,4 +11,6 @@ public interface InvestmentAccountDao {
     void insertInvestmentAccount(InvestmentAccount investmentAccount);
     boolean existPersonWithEmail(String email);
     boolean existPersonWithUsername(String email);
+    void deleteInvestmentAccountById(Integer investmentAccountId);
+    boolean existsPersonWithId(Integer id);
 }
