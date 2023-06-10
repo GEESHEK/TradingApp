@@ -2,6 +2,7 @@ package com.gee.controller;
 
 import com.gee.model.InvestmentAccount;
 import com.gee.record.InvestmentAccountRegistrationRequest;
+import com.gee.record.InvestmentAccountUpdateRequest;
 import com.gee.service.InvestmentAccountService;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,11 @@ public class InvestmentAccountController {
     @DeleteMapping("{investmentAccountId}")
     public void deleteInvestmentAccount(@PathVariable("investmentAccountId") Integer investmentAccountId) {
         investmentAccountService.deleteInvestmentAccountById(investmentAccountId);
+    }
+
+    @PutMapping("{investmentAccountId}")
+    public void updateInvestmentAccount(@PathVariable("investmentAccountId") Integer investmentAccountId,@RequestBody InvestmentAccountUpdateRequest request) {
+        investmentAccountService.updateInvestmentAccount(investmentAccountId,request);
     }
 
 }

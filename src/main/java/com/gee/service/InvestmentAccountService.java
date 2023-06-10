@@ -2,9 +2,11 @@ package com.gee.service;
 
 import com.gee.doa.InvestmentAccountDao;
 import com.gee.exception.DuplicateResourceException;
+import com.gee.exception.RequestValidationException;
 import com.gee.exception.ResourceNotFoundException;
 import com.gee.model.InvestmentAccount;
 import com.gee.record.InvestmentAccountRegistrationRequest;
+import com.gee.record.InvestmentAccountUpdateRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,48 @@ public class InvestmentAccountService {
         }
 
         investmentAccountDao.deleteInvestmentAccountById(investmentAccountId);
+    }
+
+    public void updateInvestmentAccount(Integer investmentAccountId, InvestmentAccountUpdateRequest updateRequest) {
+        InvestmentAccount investmentAccount = getInvestmentAccount(investmentAccountId);
+
+        boolean changes = false;
+
+        String username = updateRequest.username();
+        String email = updateRequest.email();
+        String password = updateRequest.password();
+        Integer alterBalance = updateRequest.alterBalance();
+
+        if(username != null && !username.equals(investmentAccount.getUsername())) {
+            if(investmentAccountDao.existPersonWithUsername(username)) {
+                throw new DuplicateResourceException("username already taken");
+            }
+            investmentAccount.setUsername(username);
+            changes = true;
+        }
+
+        if(email != null && !email.equals(investmentAccount.getEmail())) {
+            if(investmentAccountDao.existPersonWithEmail(email)) {
+                throw new DuplicateResourceException("email already taken");
+            }
+            investmentAccount.setEmail(email);
+            changes = true;
+        }
+
+        if(password != null && !password.equals(investmentAccount.getPassword())) {
+            investmentAccount.setPassword(password);
+            changes = true;
+        }
+
+        if(alterBalance != null) {
+            investmentAccount.setBalance(investmentAccount.getBalance() + alterBalance);
+            changes = true;
+        }
+
+        if(!changes) {
+           throw new RequestValidationException("no data changes found");
+        }
+
+        investmentAccountDao.updateInvestmentAccount(investmentAccount);
     }
 }
