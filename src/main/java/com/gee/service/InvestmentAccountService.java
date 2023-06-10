@@ -35,15 +35,9 @@ public class InvestmentAccountService {
         String username = investmentAccountRegistrationRequest.username();
         String email = investmentAccountRegistrationRequest.email();
 
-        if(investmentAccountDao.existPersonWithUsername(username)) {
-            throw new DuplicateResourceException("username already taken");
-        }
-
-        if(investmentAccountDao.existPersonWithEmail(email)) {
-            throw new DuplicateResourceException("email already taken");
-        }
-
-
+        existPersonWithUsername(username);
+        existPersonWithEmail(email);
+        
         InvestmentAccount investmentAccount = new InvestmentAccount(
                 investmentAccountRegistrationRequest.username(),
                 investmentAccountRegistrationRequest.email(),
@@ -74,17 +68,13 @@ public class InvestmentAccountService {
         Integer alterBalance = updateRequest.alterBalance();
 
         if(username != null && !username.equals(investmentAccount.getUsername())) {
-            if(investmentAccountDao.existPersonWithUsername(username)) {
-                throw new DuplicateResourceException("username already taken");
-            }
+            existPersonWithUsername(username);
             investmentAccount.setUsername(username);
             changes = true;
         }
 
         if(email != null && !email.equals(investmentAccount.getEmail())) {
-            if(investmentAccountDao.existPersonWithEmail(email)) {
-                throw new DuplicateResourceException("email already taken");
-            }
+            existPersonWithEmail(email);
             investmentAccount.setEmail(email);
             changes = true;
         }
@@ -104,5 +94,17 @@ public class InvestmentAccountService {
         }
 
         investmentAccountDao.updateInvestmentAccount(investmentAccount);
+    }
+
+    private void existPersonWithUsername(String username) {
+        if(investmentAccountDao.existPersonWithUsername(username)) {
+            throw new DuplicateResourceException("username already taken");
+        }
+    }
+
+    private void existPersonWithEmail(String email) {
+        if(investmentAccountDao.existPersonWithEmail(email)) {
+            throw new DuplicateResourceException("email already taken");
+        }
     }
 }
