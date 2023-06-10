@@ -51,4 +51,9 @@ public class InvestmentAccountJPADataAccessService implements InvestmentAccountD
         return investmentAccountRepository.existsInvestmentAccountById(id);
     }
 
+    @Override
+    public void updateInvestmentAccount(InvestmentAccount investmentAccount) {
+        investmentAccountRepository.save(investmentAccount);
+    }
+
 }

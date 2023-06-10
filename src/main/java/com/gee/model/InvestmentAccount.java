@@ -24,19 +24,19 @@ public class InvestmentAccount {
     private String email;
     @Column(nullable = false)
     private String password;
-    private int balance; //look into this, online says not to use double
+    private Integer balance; //look into this, online says not to use double
 
     public InvestmentAccount() {
     }
 
-    public InvestmentAccount(String username, String email, String password, int balance) {
+    public InvestmentAccount(String username, String email, String password, Integer balance) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.balance = balance;
     }
 
-    public InvestmentAccount(Integer id, String username, String email, String password, int balance) {
+    public InvestmentAccount(Integer id, String username, String email, String password, Integer balance) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -76,11 +76,11 @@ public class InvestmentAccount {
         this.password = password;
     }
 
-    public int getBalance() {
+    public Integer getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(Integer balance) {
         this.balance = balance;
     }
 
@@ -104,7 +104,7 @@ public class InvestmentAccount {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", balance=" + balance +
+                ", alterBalance=" + balance +
                 '}';
     }
 }
