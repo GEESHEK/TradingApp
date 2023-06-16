@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
@@ -19,8 +20,8 @@ public class TradingAppApplication {
     @Bean
     CommandLineRunner runner(InvestmentAccountRepository investmentAccountRepository) {
         return args -> {
-            InvestmentAccount gee = new InvestmentAccount("geeshek1995","geeshek@gmail.com","12345",200000);
-            InvestmentAccount yuko = new InvestmentAccount("yuko2000","yuko@gmail.com","123456",150000);
+            InvestmentAccount gee = new InvestmentAccount("Gee Chong Shek","geeshek1995","geeshek@gmail.com", LocalDate.of(1995,10,03),"12345",200000);
+            InvestmentAccount yuko = new InvestmentAccount("Yuko Chan","yuko2000","yuko@gmail.com",LocalDate.of(1994,8,11),"123456",150000);
 
             List<InvestmentAccount> investmentAccounts = List.of(gee,yuko);
             investmentAccountRepository.saveAll(investmentAccounts);

@@ -2,6 +2,7 @@ package com.gee.model;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -18,10 +19,14 @@ public class InvestmentAccount {
             generator = "investmentAccount_id_sequence"
     )
     private Integer id;
+    @Column(nullable = false)
+    private String name;
     @Column(nullable = false, unique = true) //come back might need to add uniqueConstraints
     private String username;
     @Column(nullable = false, unique = true) //come back might need to add uniqueConstraints
     private String email;
+    @Column(nullable = false)
+    private LocalDate dateOfBirth;
     @Column(nullable = false)
     private String password;
     private Integer balance; //look into this, online says not to use double
@@ -29,17 +34,21 @@ public class InvestmentAccount {
     public InvestmentAccount() {
     }
 
-    public InvestmentAccount(String username, String email, String password, Integer balance) {
+    public InvestmentAccount(String name, String username, String email, LocalDate dateOfBirth, String password, Integer balance) {
+        this.name = name;
         this.username = username;
         this.email = email;
+        this.dateOfBirth = dateOfBirth;
         this.password = password;
         this.balance = balance;
     }
 
-    public InvestmentAccount(Integer id, String username, String email, String password, Integer balance) {
+    public InvestmentAccount(Integer id, String name, String username, String email, LocalDate dateOfBirth, String password, Integer balance) {
         this.id = id;
+        this.name = name;
         this.username = username;
         this.email = email;
+        this.dateOfBirth = dateOfBirth;
         this.password = password;
         this.balance = balance;
     }
@@ -50,6 +59,14 @@ public class InvestmentAccount {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -66,6 +83,14 @@ public class InvestmentAccount {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getPassword() {
@@ -89,22 +114,24 @@ public class InvestmentAccount {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvestmentAccount that = (InvestmentAccount) o;
-        return balance == that.balance && Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(password, that.password);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(password, that.password) && Objects.equals(balance, that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email, password, balance);
+        return Objects.hash(id, name, username, email, dateOfBirth, password, balance);
     }
 
     @Override
     public String toString() {
         return "InvestmentAccount{" +
                 "id=" + id +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
                 ", password='" + password + '\'' +
-                ", alterBalance=" + balance +
+                ", balance=" + balance +
                 '}';
     }
 }
