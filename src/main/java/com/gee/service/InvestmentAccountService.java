@@ -38,7 +38,7 @@ public class InvestmentAccountService {
         String username = investmentAccountRegistrationRequest.username();
         String email = investmentAccountRegistrationRequest.email();
         //exception could happen if the format is wrong
-        LocalDate dateOfBirth = LocalDate.parse(investmentAccountRegistrationRequest.dataOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate dateOfBirth = LocalDate.parse(investmentAccountRegistrationRequest.dateOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE);
 
         existPersonWithUsername(username);
         existPersonWithEmail(email);
