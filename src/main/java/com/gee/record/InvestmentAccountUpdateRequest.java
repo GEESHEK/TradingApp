@@ -1,4 +1,4 @@
 package com.gee.record;
 
-public record InvestmentAccountUpdateRequest(String username, String email, String password, Integer alterBalance) {
+public record InvestmentAccountUpdateRequest(String name,String username, String email, String password, Integer alterBalance) {
 }

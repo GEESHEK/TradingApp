@@ -10,6 +10,10 @@ import com.gee.record.InvestmentAccountUpdateRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -34,13 +38,17 @@ public class InvestmentAccountService {
     public void addInvestmentAccount(InvestmentAccountRegistrationRequest investmentAccountRegistrationRequest) {
         String username = investmentAccountRegistrationRequest.username();
         String email = investmentAccountRegistrationRequest.email();
+        LocalDate dateOfBirth = getLocalDate(investmentAccountRegistrationRequest.dateOfBirth());
 
         existPersonWithUsername(username);
         existPersonWithEmail(email);
-        
+        ageChecker(dateOfBirth);
+
         InvestmentAccount investmentAccount = new InvestmentAccount(
-                investmentAccountRegistrationRequest.username(),
-                investmentAccountRegistrationRequest.email(),
+                investmentAccountRegistrationRequest.name(),
+                username,
+                email,
+                dateOfBirth,
                 investmentAccountRegistrationRequest.password(),
                 0
         );
@@ -48,7 +56,7 @@ public class InvestmentAccountService {
     }
 
     public void deleteInvestmentAccountById(Integer investmentAccountId) {
-        if(!investmentAccountDao.existsPersonWithId(investmentAccountId)) {
+        if (!investmentAccountDao.existsPersonWithId(investmentAccountId)) {
             throw new ResourceNotFoundException(
                     "investment account with id [%s] not found".formatted(investmentAccountId)
             );
@@ -62,49 +70,71 @@ public class InvestmentAccountService {
 
         boolean changes = false;
 
+        String name = updateRequest.name();
         String username = updateRequest.username();
         String email = updateRequest.email();
         String password = updateRequest.password();
         Integer alterBalance = updateRequest.alterBalance();
 
-        if(username != null && !username.equals(investmentAccount.getUsername())) {
+        if (name != null && !name.equals(investmentAccount.getName())) {
+            investmentAccount.setName(name);
+            changes = true;
+        }
+
+        if (username != null && !username.equals(investmentAccount.getUsername())) {
             existPersonWithUsername(username);
             investmentAccount.setUsername(username);
             changes = true;
         }
 
-        if(email != null && !email.equals(investmentAccount.getEmail())) {
+        if (email != null && !email.equals(investmentAccount.getEmail())) {
             existPersonWithEmail(email);
             investmentAccount.setEmail(email);
             changes = true;
         }
 
-        if(password != null && !password.equals(investmentAccount.getPassword())) {
+        if (password != null && !password.equals(investmentAccount.getPassword())) {
             investmentAccount.setPassword(password);
             changes = true;
         }
 
-        if(alterBalance != null) {
+        if (alterBalance != null) {
             investmentAccount.setBalance(investmentAccount.getBalance() + alterBalance);
             changes = true;
         }
 
-        if(!changes) {
-           throw new RequestValidationException("no data changes found");
+        if (!changes) {
+            throw new RequestValidationException("no data changes found");
         }
 
         investmentAccountDao.updateInvestmentAccount(investmentAccount);
     }
 
     private void existPersonWithUsername(String username) {
-        if(investmentAccountDao.existPersonWithUsername(username)) {
+        if (investmentAccountDao.existPersonWithUsername(username)) {
             throw new DuplicateResourceException("username already taken");
         }
     }
 
     private void existPersonWithEmail(String email) {
-        if(investmentAccountDao.existPersonWithEmail(email)) {
+        if (investmentAccountDao.existPersonWithEmail(email)) {
             throw new DuplicateResourceException("email already taken");
+        }
+    }
+
+    private void ageChecker(LocalDate dateOfBirth) {
+        int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+
+        if (age < 18) {
+            throw new RequestValidationException("you must be 18 years old to open an investment account");
+        }
+    }
+
+    private LocalDate getLocalDate(String dateOfBirth) {
+        try {
+            return LocalDate.parse(dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeException e) {
+            throw new RequestValidationException("the provided date [%s] , must be be formatted in this way YYYY-MM-DD".formatted(dateOfBirth));
         }
     }
 }
