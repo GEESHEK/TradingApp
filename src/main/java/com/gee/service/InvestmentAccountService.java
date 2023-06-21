@@ -10,6 +10,7 @@ import com.gee.record.InvestmentAccountUpdateRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -37,8 +38,7 @@ public class InvestmentAccountService {
     public void addInvestmentAccount(InvestmentAccountRegistrationRequest investmentAccountRegistrationRequest) {
         String username = investmentAccountRegistrationRequest.username();
         String email = investmentAccountRegistrationRequest.email();
-        //exception could happen if the format is wrong
-        LocalDate dateOfBirth = LocalDate.parse(investmentAccountRegistrationRequest.dateOfBirth(), DateTimeFormatter.ISO_LOCAL_DATE);
+        LocalDate dateOfBirth = getLocalDate(investmentAccountRegistrationRequest.dateOfBirth());
 
         existPersonWithUsername(username);
         existPersonWithEmail(email);
@@ -46,8 +46,8 @@ public class InvestmentAccountService {
 
         InvestmentAccount investmentAccount = new InvestmentAccount(
                 investmentAccountRegistrationRequest.name(),
-                investmentAccountRegistrationRequest.username(),
-                investmentAccountRegistrationRequest.email(),
+                username,
+                email,
                 dateOfBirth,
                 investmentAccountRegistrationRequest.password(),
                 0
@@ -76,7 +76,7 @@ public class InvestmentAccountService {
         String password = updateRequest.password();
         Integer alterBalance = updateRequest.alterBalance();
 
-        if(name != null && !name.equals(investmentAccount.getName())) {
+        if (name != null && !name.equals(investmentAccount.getName())) {
             investmentAccount.setName(name);
             changes = true;
         }
@@ -127,6 +127,14 @@ public class InvestmentAccountService {
 
         if (age < 18) {
             throw new RequestValidationException("you must be 18 years old to open an investment account");
+        }
+    }
+
+    private LocalDate getLocalDate(String dateOfBirth) {
+        try {
+            return LocalDate.parse(dateOfBirth, DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeException e) {
+            throw new RequestValidationException("the provided date [%s] , must be be formatted in this way YYYY-MM-DD".formatted(dateOfBirth));
         }
     }
 }
