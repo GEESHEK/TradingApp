@@ -1,8 +1,11 @@
 package com.gee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -30,6 +33,13 @@ public class InvestmentAccount {
     @Column(nullable = false)
     private String password;
     private Integer balance; //look into this, online says not to use double
+    @OneToMany(
+            mappedBy = "investmentAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonIgnoreProperties("investmentAccount")
+    private List<Stock> stocks = new ArrayList<>();
 
     public InvestmentAccount() {
     }
@@ -109,17 +119,25 @@ public class InvestmentAccount {
         this.balance = balance;
     }
 
+    public List<Stock> getStocks() {
+        return stocks;
+    }
+
+    public void setStocks(List<Stock> stocks) {
+        this.stocks.addAll(stocks);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvestmentAccount that = (InvestmentAccount) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(password, that.password) && Objects.equals(balance, that.balance);
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(username, that.username) && Objects.equals(email, that.email) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(password, that.password) && Objects.equals(balance, that.balance) && Objects.equals(stocks, that.stocks);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, username, email, dateOfBirth, password, balance);
+        return Objects.hash(id, name, username, email, dateOfBirth, password, balance, stocks);
     }
 
     @Override
@@ -132,6 +150,7 @@ public class InvestmentAccount {
                 ", dateOfBirth=" + dateOfBirth +
                 ", password='" + password + '\'' +
                 ", balance=" + balance +
+                ", stocks=" + stocks +
                 '}';
     }
 }
