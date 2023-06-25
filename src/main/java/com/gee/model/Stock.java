@@ -1,5 +1,6 @@
 package com.gee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class Stock {
     private LocalDateTime dateTimeOfSale;
     @ManyToOne
     @JoinColumn(name = "investmentAccountId")
-//    @JsonIgnoreProperties("stock")
+    @JsonIgnoreProperties("stocks")
     private InvestmentAccount investmentAccount;
 
     public Stock() {

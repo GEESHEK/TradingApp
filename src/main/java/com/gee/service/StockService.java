@@ -35,6 +35,7 @@ public class StockService {
     public void buyStock(StockBuyRequest stockBuyRequest) {
         //check stock price
         //check stock ticker
+        //check if account exists
         //check if account has enough money
         //for loop to create the objects
         //save a time, for now just have one time but in future can add in queues for when markets are closed.
