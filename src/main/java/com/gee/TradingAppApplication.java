@@ -29,8 +29,16 @@ public class TradingAppApplication {
             List<InvestmentAccount> investmentAccounts = List.of(gee,yuko);
             investmentAccountRepository.saveAll(investmentAccounts);
 
-            Stock tesla = new Stock("TSLA",20000,null,"USD",false, LocalDateTime.of(2023,06,21,16,51),null,gee);
-            stockRepository.save(tesla);
+            Stock tesla = new Stock("TSLA",20000,null,1.00,"USD",false, LocalDateTime.of(2023,06,21,16,51),null,gee);
+            Stock tesla1 = new Stock("TSLA",25000,null,1.50,"USD",false, LocalDateTime.of(2023,06,21,16,51),null,gee);
+            Stock google = new Stock("GOOG",20000,null,1.00,"USD",false, LocalDateTime.of(2023,06,21,16,51),null,gee);
+            Stock tesla2 = new Stock("TSLA",20000,null,1.00,"USD",false, LocalDateTime.of(2023,06,21,16,51),null,yuko);
+            List<Stock> stocks = List.of(tesla,tesla1,google,tesla2);
+            stockRepository.saveAll(stocks);
+
+//            List<Stock> stockOwned = stockRepository.findAllStockByIdAndTicker(1,"TSLA");
+//            System.out.println("-------------------------------------------------------------------------------------------");
+//            stockOwned.forEach(System.out::println);
 
             //flyaway dependency will break this
             //Caused by: org.h2.jdbc.JdbcSQLSyntaxErrorException: Sequence "INVESTMENT_ACCOUNT_SEQ" not found; SQL statement:

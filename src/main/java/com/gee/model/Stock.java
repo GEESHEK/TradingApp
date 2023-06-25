@@ -1,6 +1,5 @@
 package com.gee.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -24,28 +23,31 @@ public class Stock {
     private String ticker;
     @Column(nullable = false)
     private Integer purchasePrice;
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private Integer salePrice;
+    @Column(nullable = false)
+    private Double quantity;
     @Column(nullable = false)
     private String currency;
     @Column(nullable = false)
     private Boolean isSold;
     @Column(nullable = false)
     private LocalDateTime dateTimeOfPurchase;
-//    @Column(nullable = false)
+    //    @Column(nullable = false)
     private LocalDateTime dateTimeOfSale;
     @ManyToOne
     @JoinColumn(name = "investmentAccountId")
-    @JsonIgnoreProperties("stock")
+//    @JsonIgnoreProperties("stock")
     private InvestmentAccount investmentAccount;
 
     public Stock() {
     }
 
-    public Stock(String ticker, Integer purchasePrice, Integer salePrice, String currency, Boolean isSold, LocalDateTime dateTimeOfPurchase, LocalDateTime dateTimeOfSale, InvestmentAccount investmentAccount) {
+    public Stock(String ticker, Integer purchasePrice, Integer salePrice, Double quantity, String currency, Boolean isSold, LocalDateTime dateTimeOfPurchase, LocalDateTime dateTimeOfSale, InvestmentAccount investmentAccount) {
         this.ticker = ticker;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
+        this.quantity = quantity;
         this.currency = currency;
         this.isSold = isSold;
         this.dateTimeOfPurchase = dateTimeOfPurchase;
@@ -53,11 +55,12 @@ public class Stock {
         this.investmentAccount = investmentAccount;
     }
 
-    public Stock(Integer id, String ticker, Integer purchasePrice, Integer salePrice, String currency, Boolean isSold, LocalDateTime dateTimeOfPurchase, LocalDateTime dateTimeOfSale, InvestmentAccount investmentAccount) {
+    public Stock(Integer id, String ticker, Integer purchasePrice, Integer salePrice, Double quantity, String currency, Boolean isSold, LocalDateTime dateTimeOfPurchase, LocalDateTime dateTimeOfSale, InvestmentAccount investmentAccount) {
         this.id = id;
         this.ticker = ticker;
         this.purchasePrice = purchasePrice;
         this.salePrice = salePrice;
+        this.quantity = quantity;
         this.currency = currency;
         this.isSold = isSold;
         this.dateTimeOfPurchase = dateTimeOfPurchase;
@@ -95,6 +98,14 @@ public class Stock {
 
     public void setSalePrice(Integer salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public Double getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Double quantity) {
+        this.quantity = quantity;
     }
 
     public String getCurrency() {
@@ -142,7 +153,12 @@ public class Stock {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Stock stock = (Stock) o;
-        return Objects.equals(id, stock.id) && Objects.equals(ticker, stock.ticker) && Objects.equals(purchasePrice, stock.purchasePrice) && Objects.equals(salePrice, stock.salePrice) && Objects.equals(currency, stock.currency) && Objects.equals(isSold, stock.isSold) && Objects.equals(dateTimeOfPurchase, stock.dateTimeOfPurchase) && Objects.equals(dateTimeOfSale, stock.dateTimeOfSale) && Objects.equals(investmentAccount, stock.investmentAccount);
+        return Objects.equals(id, stock.id) && Objects.equals(ticker, stock.ticker) && Objects.equals(purchasePrice, stock.purchasePrice) && Objects.equals(salePrice, stock.salePrice) && Objects.equals(quantity, stock.quantity) && Objects.equals(currency, stock.currency) && Objects.equals(isSold, stock.isSold) && Objects.equals(dateTimeOfPurchase, stock.dateTimeOfPurchase) && Objects.equals(dateTimeOfSale, stock.dateTimeOfSale) && Objects.equals(investmentAccount, stock.investmentAccount);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, ticker, purchasePrice, salePrice, quantity, currency, isSold, dateTimeOfPurchase, dateTimeOfSale, investmentAccount);
     }
 
     @Override
@@ -152,16 +168,12 @@ public class Stock {
                 ", ticker='" + ticker + '\'' +
                 ", purchasePrice=" + purchasePrice +
                 ", salePrice=" + salePrice +
+                ", quantity=" + quantity +
                 ", currency='" + currency + '\'' +
                 ", isSold=" + isSold +
                 ", dateTimeOfPurchase=" + dateTimeOfPurchase +
                 ", dateTimeOfSale=" + dateTimeOfSale +
                 ", investmentAccount=" + investmentAccount +
                 '}';
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, ticker, purchasePrice, salePrice, currency, isSold, dateTimeOfPurchase, dateTimeOfSale, investmentAccount);
     }
 }

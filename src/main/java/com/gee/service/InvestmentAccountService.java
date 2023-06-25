@@ -22,7 +22,7 @@ public class InvestmentAccountService {
     private final InvestmentAccountDao investmentAccountDao;
 
     //@Qualifier > change DAO implementation e.g. JDBCTemplate
-    public InvestmentAccountService(@Qualifier("jpa") InvestmentAccountDao investmentAccountDao) {
+    public InvestmentAccountService(@Qualifier("investment_account_jpa") InvestmentAccountDao investmentAccountDao) {
         this.investmentAccountDao = investmentAccountDao;
     }
 
