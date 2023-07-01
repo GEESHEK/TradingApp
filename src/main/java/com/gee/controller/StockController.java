@@ -28,6 +28,11 @@ public class StockController {
         return stockService.getStock(stockId);
     }
 
+    @GetMapping("{tickerSymbol}")
+    public List<Stock> getStocksByTickerSymbol(@PathVariable("tickerSymbol") String ticker) {
+        return null;
+    }
+
     @PostMapping
     public void buyStock(@RequestBody StockBuyRequest stockBuyRequest) {
         stockService.buyStock(stockBuyRequest);
@@ -36,6 +41,11 @@ public class StockController {
     @PutMapping("{investmentAccountId}")
     public void sellStock(@PathVariable("investmentAccountId") Integer investmentAccountId, @RequestBody StockSellRequest stockSellRequest) {
         stockService.sellStock(investmentAccountId, stockSellRequest);
+    }
+
+    @GetMapping("/investmentAccount/{id}") //https://www.baeldung.com/spring-request-param the /ticker has to come after the stocks? and not the one if you have
+    public List<Stock> findStockByInvestmentAccountIdAndTicker(@PathVariable("id") Integer id, @RequestParam(required = false) String ticker) {
+        return stockService.getStockByInvestmentAccountIdAndTicker(id,ticker);
     }
 
 }

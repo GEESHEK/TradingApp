@@ -32,6 +32,14 @@ public class StockService {
                 .orElseThrow(() -> new ResourceNotFoundException("stock with id [%s] not found".formatted(id)));
     }
 
+    //method that can return only a specific ticker symbol based on the account.
+
+    public List<Stock> getStockByInvestmentAccountIdAndTicker(Integer id, String ticker) {
+        return stockDao.findStockByInvestmentAccountIdAndTicker(id, ticker);
+    }
+
+    //method that returns all stock for an account this can actually be done when I retrieve the data from investment account.
+
     public void buyStock(StockBuyRequest stockBuyRequest) {
         //check stock price
         //check stock ticker

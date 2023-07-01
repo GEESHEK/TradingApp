@@ -46,4 +46,8 @@ public class StockJPADataAccessService implements StockDao {
         stockRepository.save(stock);
     }
 
+    @Override
+    public List<Stock> findStockByInvestmentAccountIdAndTicker(Integer id, String ticker) {
+        return stockRepository.findStockByInvestmentAccountIdAndTicker(id,ticker);
+    }
 }
