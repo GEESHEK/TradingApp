@@ -1,6 +1,7 @@
 package com.gee.service;
 
 import com.gee.doa.StockDao;
+import com.gee.exception.RequestValidationException;
 import com.gee.exception.ResourceNotFoundException;
 import com.gee.model.InvestmentAccount;
 import com.gee.model.Stock;
@@ -33,28 +34,37 @@ public class StockService {
     }
 
     //method that can return only a specific ticker symbol based on the account.
-
+    // this will return an empty array if either does not exist. Could throw exception if you want.
     public List<Stock> getStockByInvestmentAccountIdAndTicker(Integer id, String ticker) {
         return stockDao.findStockByInvestmentAccountIdAndTicker(id, ticker);
     }
 
     //method that returns all stock for an account this can actually be done when I retrieve the data from investment account.
 
-    public void buyStock(StockBuyRequest stockBuyRequest) {
-        //check stock price
-        //check stock ticker
-        //check if account exists
+    public void buyStock(Integer investmentAccountId, StockBuyRequest stockBuyRequest) {
+        //check if account exists and retrieve it.
+        InvestmentAccount investmentAccount = investmentAccountService.getInvestmentAccount(investmentAccountId);
+        //check stock ticker > if exist on yahoo.ticker check then okay!
+        String ticker = stockBuyRequest.ticker();
         //check if account has enough money
-        //for loop to create the objects
+        Integer stockPrice = 100;
         //save a time, for now just have one time but in future can add in queues for when markets are closed.
+        LocalDateTime timeOfPurchase = LocalDateTime.now();
+        Double units = stockBuyRequest.unit();
+        Integer cost = (int) (stockPrice * units) * 100; //come back to check if the math checks out
+        if (investmentAccount.getBalance() < cost) {
+            throw new RequestValidationException("Non-Sufficient Funds, transaction cannot be completed");
+        }
+        //for loop to create the objects
+        while (units > 0) {
+            if (units > 1) {
+                stockDao.insertStock(new Stock(ticker, stockPrice, null, 1.00, "USD", false, timeOfPurchase, null, investmentAccount));
+            } else {
+                stockDao.insertStock(new Stock(ticker, stockPrice, null, units, "USD", false, timeOfPurchase, null, investmentAccount));
+            }
+            units -= 1;
+        }
 
-        //only when all checks are done
-        LocalDateTime localDateTime = LocalDateTime.now();
-
-        Stock stock = new Stock(
-
-        );
-        stockDao.insertStock(stock);
     }
 
     public void sellStock(Integer investmentAccountId, StockSellRequest stockSellRequest) {
