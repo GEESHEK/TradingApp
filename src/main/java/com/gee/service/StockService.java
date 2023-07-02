@@ -35,8 +35,8 @@ public class StockService {
 
     //method that can return only a specific ticker symbol based on the account.
     // this will return an empty array if either does not exist. Could throw exception if you want.
-    public List<Stock> getStockByInvestmentAccountIdAndTicker(Integer id, String ticker) {
-        return stockDao.findStockByInvestmentAccountIdAndTicker(id, ticker);
+    public List<Stock> findStockByTickerOrderByDateTimeOfPurchaseDescending(Integer id, String ticker) {
+        return stockDao.findStockByTickerOrderByDateTimeOfPurchaseDescending(id, ticker);
     }
 
     //method that returns all stock for an account this can actually be done when I retrieve the data from investment account.
@@ -50,7 +50,7 @@ public class StockService {
         Integer stockPrice = 100;
         //save a time, for now just have one time but in future can add in queues for when markets are closed.
         LocalDateTime timeOfPurchase = LocalDateTime.now();
-        Double units = stockBuyRequest.unit();
+        double units = stockBuyRequest.unit();
         Integer cost = (int) (stockPrice * units) * 100; //come back to check if the math checks out
         if (investmentAccount.getBalance() < cost) {
             throw new RequestValidationException("Non-Sufficient Funds, transaction cannot be completed");
@@ -68,76 +68,42 @@ public class StockService {
     }
 
     public void sellStock(Integer investmentAccountId, StockSellRequest stockSellRequest) {
-        InvestmentAccount investmentAccount = investmentAccountService.getInvestmentAccount(investmentAccountId);
-        List<Stock> stockList = investmentAccount.getStocks();
+
+        //check stock ticker > if exist on yahoo.ticker check then okay!
+        String ticker = stockSellRequest.ticker();
 
         //filter all stocks
+        List<Stock> stockListFilteredFIFO = stockDao.findStockByInvestmentAccountIdAndTickerOrderByDateTimeOfPurchaseAscending(investmentAccountId, stockSellRequest.ticker());
+        double unitsHeld = 0.00;
+        //Calculate units held by account //maybe SQL in future :D
+        for (Stock s : stockListFilteredFIFO) {
+            unitsHeld += s.getQuantity();
+        }
 
-//        stockList.stream().filter()
+        if (stockSellRequest.unit() > unitsHeld) {
+            throw new RequestValidationException("cannot not sell stocks due to non-sufficient amount of share held");
+        }
 
-//        Stock stock = getStock(stockId);
-//
-//
-//        boolean changes = false;
-//
-//        String name = updateRequest.name();
-//        String username = updateRequest.username();
-//        String email = updateRequest.email();
-//        String password = updateRequest.password();
-//        Integer alterBalance = updateRequest.alterBalance();
-//
-//        if (name != null && !name.equals(investmentAccount.getName())) {
-//            investmentAccount.setName(name);
-//            changes = true;
+//        for (double unitsSold = 0; i < unitsHeld; unitsSold  ) {
+//           stockListFilteredFIFO
 //        }
-//
-//        if (username != null && !username.equals(investmentAccount.getUsername())) {
-//            existPersonWithUsername(username);
-//            investmentAccount.setUsername(username);
-//            changes = true;
-//        }
-//
-//        if (email != null && !email.equals(investmentAccount.getEmail())) {
-//            existPersonWithEmail(email);
-//            investmentAccount.setEmail(email);
-//            changes = true;
-//        }
-//
-//        if (password != null && !password.equals(investmentAccount.getPassword())) {
-//            investmentAccount.setPassword(password);
-//            changes = true;
-//        }
-//
-//        if (alterBalance != null) {
-//            investmentAccount.setBalance(investmentAccount.getBalance() + alterBalance);
-//            changes = true;
-//        }
-//
-//        if (!changes) {
-//            throw new RequestValidationException("no data changes found");
-//        }
-//
-//        investmentAccountDao.updateInvestmentAccount(investmentAccount);
+
+        double unitsSold = 0.00;
+        int index = 0;
+
+        while (unitsSold < stockSellRequest.unit()) {
+            Stock stockToBeSold = stockListFilteredFIFO.get(index);
+            double quantityOfUnitHeld = stockListFilteredFIFO.get(index).getQuantity();
+            if(stockSellRequest.unit() > 1 && quantityOfUnitHeld == 1) {
+                unitsSold += quantityOfUnitHeld;
+                stockToBeSold.setQuantity(0.00);
+                stockToBeSold.setSold(true);
+                stockDao.updateStock(stockToBeSold);
+            }
+
+
+        }
     }
 
-//    private void existPersonWithUsername(String username) {
-//        if (investmentAccountDao.existPersonWithUsername(username)) {
-//            throw new DuplicateResourceException("username already taken");
-//        }
-//    }
-//
-//    private void existPersonWithEmail(String email) {
-//        if (investmentAccountDao.existPersonWithEmail(email)) {
-//            throw new DuplicateResourceException("email already taken");
-//        }
-//    }
-//
-//    private void ageChecker(LocalDate dateOfBirth) {
-//        int age = Period.between(dateOfBirth, LocalDate.now()).getYears();
-//
-//        if (age < 18) {
-//            throw new RequestValidationException("you must be 18 years old to open an investment account");
-//        }
-//    }
 
 }

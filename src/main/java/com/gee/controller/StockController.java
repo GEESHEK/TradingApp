@@ -35,8 +35,8 @@ public class StockController {
 
     @GetMapping("/investmentAccount/{id}")
     //https://www.baeldung.com/spring-request-param the /ticker has to come after the stocks? and not the one if you have
-    public List<Stock> findStockByInvestmentAccountIdAndTicker(@PathVariable("id") Integer id, @RequestParam(required = false) String ticker) {
-        return stockService.getStockByInvestmentAccountIdAndTicker(id, ticker);
+    public List<Stock> getStockHistoryByInvestmentAccountIdAndTicker(@PathVariable("id") Integer id, @RequestParam(required = false) String ticker) {
+        return stockService.findStockByTickerOrderByDateTimeOfPurchaseDescending(id, ticker);
     }
 
     @PostMapping("{investmentAccountId}")

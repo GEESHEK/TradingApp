@@ -15,6 +15,7 @@ public interface StockDao {
     void deleteStockById(Integer stockId);
     boolean existsStockWithId(Integer id);
     void updateStock(Stock stock);
-    List<Stock> findStockByInvestmentAccountIdAndTicker(Integer id, String ticker);
+    List<Stock> findStockByTickerOrderByDateTimeOfPurchaseDescending(Integer id, String ticker);
+    List<Stock> findStockByInvestmentAccountIdAndTickerOrderByDateTimeOfPurchaseAscending(Integer id, String ticker);
 
 }
