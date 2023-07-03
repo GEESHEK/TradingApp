@@ -117,12 +117,12 @@ public class Stock {
         this.currency = currency;
     }
 
-    public Boolean getSold() {
+    public Boolean getIsSold() {
         return isSold;
     }
 
-    public void setSold(Boolean sold) {
-        isSold = sold;
+    public void setIsSold(Boolean isSold) {
+        this.isSold = isSold;
     }
 
     public LocalDateTime getDateTimeOfPurchase() {

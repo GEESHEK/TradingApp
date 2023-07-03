@@ -110,6 +110,10 @@ public class InvestmentAccountService {
         investmentAccountDao.updateInvestmentAccount(investmentAccount);
     }
 
+    public void updateInvestmentAccountBalance(InvestmentAccount investmentAccount) {
+        investmentAccountDao.updateInvestmentAccount(investmentAccount);
+    }
+
     private void existPersonWithUsername(String username) {
         if (investmentAccountDao.existPersonWithUsername(username)) {
             throw new DuplicateResourceException("username already taken");
