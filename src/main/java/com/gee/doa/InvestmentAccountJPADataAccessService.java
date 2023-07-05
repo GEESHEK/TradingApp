@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository("jpa")
+@Repository("investment_account_jpa")
 public class InvestmentAccountJPADataAccessService implements InvestmentAccountDao {
 
     private final InvestmentAccountRepository investmentAccountRepository;

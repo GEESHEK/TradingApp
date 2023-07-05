@@ -39,8 +39,8 @@ public class InvestmentAccountController {
     }
 
     @PutMapping("{investmentAccountId}")
-    public void updateInvestmentAccount(@PathVariable("investmentAccountId") Integer investmentAccountId,@RequestBody InvestmentAccountUpdateRequest request) {
-        investmentAccountService.updateInvestmentAccount(investmentAccountId,request);
+    public void updateInvestmentAccount(@PathVariable("investmentAccountId") Integer investmentAccountId, @RequestBody InvestmentAccountUpdateRequest request) {
+        investmentAccountService.updateInvestmentAccount(investmentAccountId, request);
     }
 
 }

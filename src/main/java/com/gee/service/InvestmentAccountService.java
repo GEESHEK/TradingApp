@@ -22,7 +22,7 @@ public class InvestmentAccountService {
     private final InvestmentAccountDao investmentAccountDao;
 
     //@Qualifier > change DAO implementation e.g. JDBCTemplate
-    public InvestmentAccountService(@Qualifier("jpa") InvestmentAccountDao investmentAccountDao) {
+    public InvestmentAccountService(@Qualifier("investment_account_jpa") InvestmentAccountDao investmentAccountDao) {
         this.investmentAccountDao = investmentAccountDao;
     }
 
@@ -107,6 +107,10 @@ public class InvestmentAccountService {
             throw new RequestValidationException("no data changes found");
         }
 
+        investmentAccountDao.updateInvestmentAccount(investmentAccount);
+    }
+
+    public void updateInvestmentAccountBalance(InvestmentAccount investmentAccount) {
         investmentAccountDao.updateInvestmentAccount(investmentAccount);
     }
 
